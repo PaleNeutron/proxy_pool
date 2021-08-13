@@ -17,6 +17,7 @@ import requests
 from time import sleep
 from datetime import date, timedelta
 import pandas as pd
+import os
 
 from util.webRequest import WebRequest
 
@@ -358,7 +359,11 @@ class ProxyFetcher(object):
         
     @staticmethod
     def freeProxy23():  # 命名不和已有重复即可
-        proxy_list=requests.get('https://raw.githubusercontent.com/ma-ji/proxy_pool/master/fetcher/slow_rotate.txt').text.split()
+        # proxy_list=requests.get('https://raw.githubusercontent.com/ma-ji/proxy_pool/master/fetcher/slow_rotate.txt').text.split()
+        dirname = os.path.dirname(os.path.abspath(__file__))
+        fn = os.path.join(dirname, "slow_rotate.txt")
+        with open(fn) as f:
+            proxy_list = f.read().split()
         for proxy in set(proxy_list):
             yield proxy
         # 确保每个proxy都是 host:ip正确的格式返回
